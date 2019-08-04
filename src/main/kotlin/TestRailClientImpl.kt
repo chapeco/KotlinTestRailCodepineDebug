@@ -3,7 +3,7 @@ import com.codepine.api.testrail.model.Result
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 
-class TestRailImpl : TestRailClient {
+class TestRailClientImpl : TestRailClient {
 
     val client = createClient(
         endpoint = Configuration.endpoint,
@@ -13,17 +13,18 @@ class TestRailImpl : TestRailClient {
 
     val result = Result().apply {
         testId = 1
-        caseId = 1
         statusId = 1
         assignedtoId = 1
         comment = "foobar"
-        elapsed = "..."
         defects = listOf("foo","bar")
-        version = "..."
     }
+
+    val resultOther = Result()
+        .setTestId(1)
+        .setStatusId(2)
     val resultFields = client.ResultFields().list().execute()
 
-    val listOfResults = listOf(result,result,result)
+    val listOfResults = mutableListOf(resultOther)
 
     override fun createClient(endpoint: String, username: String, password: String): TestRail {
         return TestRail.builder(endpoint, username, password).build()
